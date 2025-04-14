@@ -12,9 +12,9 @@ class OrderService
         $total = $this->cartService->getCartSum($user);
         DB::beginTransaction();
         try {
-//            if ($total < 500) {
-//                throw new \Exception('Минимальная сумма заказа 500 рублей');
-//            }
+            if ($total < 500) {
+                throw new \Exception('Минимальная сумма заказа 500 рублей');
+            }
             $order = Order::query()->create([
                 'name' => $data['name'],
                 'phone' => $data['phone'],

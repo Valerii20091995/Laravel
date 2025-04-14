@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RegistrateRequest extends FormRequest
+class signUpRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class RegistrateRequest extends FormRequest
         return [
             'name' => 'required|min:2|max:255',
             'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:8|max:255|confirmed',
+            'password' => 'required|min:3|max:255|confirmed',
         ];
     }
     public function messages(): array
@@ -38,7 +38,7 @@ class RegistrateRequest extends FormRequest
             'email.max' => 'Email не может быть больше 255 символов',
             'email.unique' => 'Пользователь с таким email уже существует',
             'password.required' => 'Введите пароль',
-            'password.min' => 'Введите пароль больше 8 символов',
+            'password.min' => 'Введите пароль больше 3 символов',
             'password.max' => 'Пароль не может быть больше 255 символов',
             'password.confirmed' => 'Пароли не совпадают'
         ];

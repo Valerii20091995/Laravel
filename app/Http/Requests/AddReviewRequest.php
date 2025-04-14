@@ -22,16 +22,16 @@ class AddReviewRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'product_id' => 'required|integer|exists:products,id',
-            'rating' => 'required|between:1,5',
-            'comment' => 'string',
+            'rating' => 'required|integer|between:1,5',
+            'product_review' => 'required|string|min:10',
+            // Убрали правило для author, так как он больше не приходит из формы
         ];
     }
     public function messages()
     {
         return [
-            'grade.required' => 'выберите оценку',
-            'grade.between' => 'оценка может быть только от 1 до 5',
+            'rating.between' => 'Оценка должна быть от 1 до 5',
+            'product_review.min' => 'Отзыв должен быть минимум 10 символов' // Исправил опечатку в сообщении
         ];
     }
 }

@@ -13,8 +13,8 @@ Route::get('/', function () {
 });
 Route::middleware('guest')->group(function ()
 {
-    Route::get('/registration', [UserController::class, 'getRegistrationForm'])->name('registration');
-    Route::post('/registration', [UserController::class, 'registrate'])->name('registrate');
+    Route::get('/signUp', [UserController::class, 'getSignUp'])->name('signUp');
+    Route::post('/signUp', [UserController::class, 'signUp'])->name('signUp.post');
     Route::get('/login', [UserController::class, 'getLogin'])->name('login');
     Route::post('/login', [UserController::class, 'login'])->name('login.submit');
 });

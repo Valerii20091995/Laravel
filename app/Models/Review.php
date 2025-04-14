@@ -15,15 +15,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class Review extends Model
 {
-    protected $fillable = ['product_id', 'user_id', 'date', 'grade', 'comment', 'user'];
-
+    protected $fillable = [
+        'product_id',
+        'rating',
+        'author',
+        'product_review',
+        'created_at'
+    ];
     public function product()
     {
         return $this->belongsTo(Product::class);
     }
-
-    public function author()
+//    public static function getReviewByProductId($productId)
+//    {
+//        return self::where('product_id', $productId)->get();
+//    }
+    public static function getAverageRating($productId)
     {
-        return $this->hasOne(User::class, 'id', 'user_id');
+        return self::where('product_id', $productId)->avg('rating');
     }
 }
