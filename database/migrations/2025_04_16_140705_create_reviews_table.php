@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->integer('product_id')->nullable(false);
             $table->integer('user_id')->nullable(false);
-            $table->date('date')->nullable(false);
             $table->integer('rating')->nullable(false);
             $table->text('product_review');
             $table->foreign('product_id')->references('id')->on('products');

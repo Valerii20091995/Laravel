@@ -3,24 +3,25 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 /**
  * @property int $product_id
  * @property int $user_id
- * @property string $date
- * @property int $grade
- * @property string $comment
- * @property User $user
+ * @property int $rating
+ * @property string $product_review
  */
 
 class Review extends Model
 {
+    use Notifiable;
+    //разрешает доабвлять занчние в таблицу
+
     protected $fillable = [
         'product_id',
-        'rating',
         'user_id',
-        'product_review',
-        'created_at'
+        'rating',
+        'product_review'
     ];
     public function product()
     {

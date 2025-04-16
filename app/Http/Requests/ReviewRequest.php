@@ -22,16 +22,18 @@ class ReviewRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'product_id' => 'required|exists:products,id',
             'rating' => 'required|integer|between:1,5',
             'product_review' => 'required|string|min:4',
-            // Убрали правило для author, так как он больше не приходит из формы
+
+
         ];
     }
-    public function messages()
+    public function messages():array
     {
         return [
             'rating.between' => 'Оценка должна быть от 1 до 5',
-            'product_review.min' => 'Отзыв должен быть минимум 4 символов' // Исправил опечатку в сообщении
+            'product_review.min' => 'Отзыв должен быть минимум 4 символов'
         ];
     }
 }

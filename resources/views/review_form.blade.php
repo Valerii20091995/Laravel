@@ -11,7 +11,7 @@
         <p class="average-rating">Средняя оценка продукта по отзывам: {{$averageRating}}</p>
         @foreach($reviews as $review)
             <div class="review">
-                <p><strong>{{$review->author}}</strong> (Оценка: {{$review->rating}}/5)</p>
+                <p> (Оценка: {{$review->rating}}/5)</p>
                 <p>{{$review->product_review}}</p>
                 <p><em>{{$review->created_at->format('d.m.Y H:i')}}</em></p>
             </div>
@@ -20,8 +20,9 @@
 
     <h3>Оставить отзыв</h3>
     @auth
-        <form action="{{ route('review.store', $product->id) }}" method="POST">
+        <form action="{{route('review.store')}}" method="POST">
             @csrf
+            <input type="hidden" name="product_id" value="{{ $product->id }}">
             <label for="rating">Оценка (1-5):</label>
             @error('rating')
             <label for="rating"><b>{{ $message }}</b></label>
