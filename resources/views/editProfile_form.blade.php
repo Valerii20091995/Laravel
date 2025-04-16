@@ -52,21 +52,21 @@
 
 <div class="container">
     <h2>Редактирование профиля</h2>
-    <form action="profile-change" method="POST">
+    <form action="{{route('editProfile.submit')}}" method="POST">
         @csrf
         <div class="form-group">
             <label for="name">Имя:</label>
-            <?php if (isset($errors['name'])):  ?>
-                <label style="color: red"><?php echo $errors['name'];?></label>
-            <?php endif; ?>
-            <input type="text" id="name" name="name" value="<?php echo $user->getName();?>" >
+            @error('name')
+            <label for="name"><b>{{ $message }}</b></label>
+            @enderror
+            <input type="text" id="name" name="name" value="{{$user->name}}" >
         </div>
         <div class="form-group">
             <label for="email">Email:</label>
-            <?php if (isset($errors['email'])):  ?>
-                <label style="color: red"><?php echo $errors['email'];?></label>
-            <?php endif; ?>
-            <input type="email" id="email" name="email" value="<?php echo $user->getEmail(); ?>" >
+            @error('email')
+            <label for="email"><b>{{ $message }}</b></label>
+            @enderror
+            <input type="email" id="email" name="email" value="{{$user->email}}" >
         </div>
         <button type="submit">Сохранить изменения</button>
     </form>

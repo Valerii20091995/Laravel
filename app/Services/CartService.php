@@ -12,7 +12,6 @@ class CartService
 {
     public function addProduct(AddProductDTO $dto):int
     {
-        // нельзя через реквест делать в сервисах надо лии напрямую переменные либо дто создавать
         $userProduct = UserProduct::query()->firstOrCreate(
             ['user_id'=> Auth::id(),'product_id'=> $dto->productId],
             ['amount'=>0]

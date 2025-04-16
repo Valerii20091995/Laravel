@@ -1,4 +1,4 @@
-<form action="./signUp" method="POST">
+<form action="{{route('signUp')}}" method="POST">
     @csrf
     <div class="container">
         <h1>Register</h1>

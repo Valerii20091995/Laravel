@@ -20,7 +20,7 @@
 
     <h3>Оставить отзыв</h3>
     @auth
-        <form action="{{route('review.store',['product'=> $product->id])}}" method="POST">
+        <form action="{{ route('review.store', $product->id) }}" method="POST">
             @csrf
             <label for="rating">Оценка (1-5):</label>
             @error('rating')

@@ -30,7 +30,6 @@ class EditProfileRequest extends FormRequest
                 'max:255',
                 Rule::unique('users', 'email')->ignore($this->user()->id),
             ],
-            'password' => 'sometimes|nullable|min:8|max:255|confirmed',
         ];
     }
     public function messages()
@@ -41,9 +40,6 @@ class EditProfileRequest extends FormRequest
             'email.email' => 'Некоректный email',
             'email.max' => 'Email не может быть больше 255 символов',
             'email.unique' => 'Пользователь с таким email уже существует',
-            'password.min' => 'Введите пароль больше 8 символов',
-            'password.max' => 'Пароль не может быть больше 255 символов',
-            'password.confirmed' => 'Пароли не совпадают'
         ];
     }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AddReviewRequest extends FormRequest
+class ReviewRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +23,7 @@ class AddReviewRequest extends FormRequest
     {
         return [
             'rating' => 'required|integer|between:1,5',
-            'product_review' => 'required|string|min:10',
+            'product_review' => 'required|string|min:4',
             // Убрали правило для author, так как он больше не приходит из формы
         ];
     }
@@ -31,7 +31,7 @@ class AddReviewRequest extends FormRequest
     {
         return [
             'rating.between' => 'Оценка должна быть от 1 до 5',
-            'product_review.min' => 'Отзыв должен быть минимум 10 символов' // Исправил опечатку в сообщении
+            'product_review.min' => 'Отзыв должен быть минимум 4 символов' // Исправил опечатку в сообщении
         ];
     }
 }

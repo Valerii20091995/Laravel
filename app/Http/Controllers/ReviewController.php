@@ -1,11 +1,17 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Review;
+use App\Models\Product;
+use App\Http\Requests\ReviewRequest;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 class ReviewController
 {
+
     public function getProduct(Product $product)
     {
+//        dd($product);
         $reviews = $product->reviews;
         $averageRating = Review::getAverageRating($product->id);
 
@@ -18,10 +24,12 @@ class ReviewController
 
     public function addReview(ReviewRequest $request, Product $product)
     {
+//        dd($product);
+        /** @var  User $user */
         Review::query()->create([
             'product_id' => $product->id,
             'rating' => $request->rating,
-            'author' => Auth::user()->name, // Берем имя авторизованного пользователя
+            'user_id' => Auth::id(),
             'product_review' => $request->product_review
         ]);
 

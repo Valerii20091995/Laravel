@@ -23,14 +23,12 @@ class AddProductRequest extends FormRequest
     {
         return [
             'product_id' => 'required|integer|exists:products,id',
-            'amount' => 'required|integer',
         ];
     }
     public function messages()
     {
         return [
             'product_id.exists' => 'продукта c таким id не существует',
-            'amount.required' => 'не может быть пустое поле',
         ];
     }
 }

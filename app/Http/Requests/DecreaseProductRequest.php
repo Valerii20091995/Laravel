@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DecreaseProductFromCartRequest extends FormRequest
+class DecreaseProductRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +23,6 @@ class DecreaseProductFromCartRequest extends FormRequest
     {
         return [
             'product_id' => 'integer|exists:products,id',
-            'amount' => 'required|integer'
         ];
     }
     public function messages()
@@ -31,8 +30,7 @@ class DecreaseProductFromCartRequest extends FormRequest
         return [
             'product_id.integer' => 'id продукта может содержать только цифры',
             'product_id.exists' => 'продукта c таким id не существует',
-            'amount.required' => 'введите количество',
-            'amount.integer' => 'количество продукта может содержать только цифры'
+
         ];
     }
 }

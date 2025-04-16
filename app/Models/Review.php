@@ -18,7 +18,7 @@ class Review extends Model
     protected $fillable = [
         'product_id',
         'rating',
-        'author',
+        'user_id',
         'product_review',
         'created_at'
     ];
@@ -26,12 +26,12 @@ class Review extends Model
     {
         return $this->belongsTo(Product::class);
     }
-//    public static function getReviewByProductId($productId)
-//    {
-//        return self::where('product_id', $productId)->get();
-//    }
     public static function getAverageRating($productId)
     {
         return self::where('product_id', $productId)->avg('rating');
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }
