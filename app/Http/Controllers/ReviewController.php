@@ -21,7 +21,7 @@ class ReviewController
         ]);
     }
 
-    public function addReview(ReviewRequest $request)
+    public function addReview(ReviewRequest $request, Product $product)
     {
          $validated = $request->validated();
         /** @var  User $user */
@@ -32,6 +32,6 @@ class ReviewController
             'product_review' => $validated['product_review']
         ]);
 
-        return redirect()->route('product-review');
+        return redirect()->route('product.show', ['product' => $validated['product_id']]);
     }
 }

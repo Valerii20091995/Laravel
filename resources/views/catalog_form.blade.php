@@ -37,7 +37,7 @@
             <input type="hidden" name="product_id" value="{{$product->id}}">
             <button type="submit"  class="remove-product-btn">-</button>
         </form>
-        <form action="{{route('product.show')}}" method="GET" class="product-form">
+        <form action="{{route('product.show',['product' => $product->id])}}" method="GET" class="product-form">
             @csrf
             <input type="hidden" name="product_id" value="{{$product->id}}" id="product_id" required>
             <button type="submit"  class="remove-product-btn">отзывы о продукте</button>

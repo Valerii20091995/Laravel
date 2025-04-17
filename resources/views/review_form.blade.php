@@ -8,10 +8,10 @@
     @if($reviews->isEmpty())
         <p>На данный момент нет отзывов, напишите первым и поставьте оценку продукту!</p>
     @else
-        <p class="average-rating">Средняя оценка продукта по отзывам: {{$averageRating}}</p>
+        <p class="average-rating">Средняя оценка продукта по отзывам: {{number_format($averageRating,1)}}</p>
         @foreach($reviews as $review)
             <div class="review">
-                <p> (Оценка: {{$review->rating}}/5)</p>
+                <p> <strong>{{$review->user->name}}</strong> (Оценка: {{$review->rating}}/5)</p>
                 <p>{{$review->product_review}}</p>
                 <p><em>{{$review->created_at->format('d.m.Y H:i')}}</em></p>
             </div>
