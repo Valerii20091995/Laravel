@@ -2,8 +2,8 @@
     <nav class="navbar">
 
         <a href="{{route('profile')}}" class="navbar-link">Мой профиль</a>
-        <a href="/cart" class="navbar-link">Корзина <span class="total-count">0</span></a>
-        <a href="/orders" class="navbar-link">Мои заказы</a>
+        <a href="{{route('cart')}}" class="navbar-link">Корзина <span class="total-count">0</span></a>
+        <a href="{{route('user-orders')}}" class="navbar-link">Мои заказы</a>
         <a href="{{route('logout')}}" class="navbar-link">выйти из профиля</a>
 
     </nav>

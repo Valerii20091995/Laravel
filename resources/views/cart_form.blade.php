@@ -23,7 +23,7 @@
         </div>
         @endforeach
     </div>
-    <a href="/order" class="page-title">Оформить заказ</a>
+    <a href="{{route('createOrder')}}" class="page-title">Оформить заказ</a>
 </div>
 <style>
     body {

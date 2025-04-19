@@ -2,46 +2,48 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\OrderRequest;
+use Illuminate\Support\Facades\Auth;
+use App\Services\CartService;
+use App\Services\OrderService;
+use App\Models\User;
 class OrderController
 {
-    public function getAll():array
+    public function __construct(
+        private OrderService $orderService,
+        private CartService $cartService
+    ) {}
+    public function getCheckOutForm()
     {
         /** @var User $user */
-        $user = Auth::user();
-        $orders = Order::with('products')
-            ->where('user_id', $user->id)
-            ->get();
-        $result = [];
-
-        foreach ($orders as $order) {
-            $orderProducts =[];
-            $totalSum = 0;
-
-            foreach ($order->products as $product) {
-                $sum = $product->pivot->amount * $product->price;
-
-                $orderProducts[] = [
-                    'id' => $product->id,
-                    'name' => $product->name,
-                    'amount' => $product->pivot->amount,
-                    'price' => $product->price,
-                    'sum' => $sum,
-                ];
-                $totalSum += $sum;
-            }
-
-            $result[] = [
-                'id' => $order->id,
-                'name' => $order->name,
-                'phone' => $order->phone,
-                'comment' => $order->comment,
-                'address' => $order->address,
-                'created_at' => $order->created_at,
-                'orderProducts' => $orderProducts,
-                'total_sum' => $totalSum,
-            ];
+        $cartItems = $this->cartService->getUserCart(Auth::user());
+        $total = $this->cartService->getCartSum(Auth::user());
+        if ($cartItems->isEmpty()) {
+            return redirect()->route('catalog');
         }
-        return $result;
+        return view('order_form', ['cartItems'=>$cartItems, 'total'=>$total]);
     }
+    public function handleCheckOut(OrderRequest $request)
+    {
+        /** @var User $user */
+        try {
+            $order = $this->orderService->createOrder(
+                Auth::user(),
+                $request->validated()
+            );
+            return redirect()->route('catalog');
+        } catch (\Exception $e) {
+            return back()
+                ->withInput()
+                ->with('error', $e->getMessage());
+        }
+    }
+    public function getAll()
+    {
+        $userOrders = $this->orderService->getAll();
+
+        return view('order_detail', ['userOrders'=>$userOrders]);
+    }
+
 
 }

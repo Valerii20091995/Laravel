@@ -2,46 +2,38 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
 /**
  * @property int $id
  * @property int $user_id
- * @property string $contact_name
- * @property string $contact_phone
+ * @property string $name
+ * @property string $phone
  * @property string $comment
  * @property string $address
- * @property int $sum
  */
 class Order extends Model
 {
 
-    protected $fillable = ['id', 'user_id', 'contact_name', 'contact_phone', 'comment', 'address', 'sum'];
-
-    public function user()
+    use HasFactory;
+    protected $fillable = [
+        'name',
+        'phone',
+        'comment',
+        'address',
+        'user_id'
+    ];
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
-    public function orderProducts()
+    public function products(): BelongsToMany
     {
-        return $this->hasMany(OrderProduct::class);
-    }
-    public function products()
-    {
-        return $this->hasManyThrough(
-            Product::class,
-            OrderProduct::class,
-            'order_id',
-            'id',
-            'id',
-            'product_id'
-        );
-    }
-    public function sum(): int
-    {
-        $total = 0;
-        foreach ($this->orderProducts()->get() as $orderProduct) {
-            $total += $orderProduct->sum();
-        }
-        return $total;
+        return $this->belongsToMany(Product::class, 'order_products')
+            ->withPivot('amount');
     }
 }

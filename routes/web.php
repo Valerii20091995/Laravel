@@ -28,10 +28,9 @@ Route::middleware('auth')->group(function ()
     Route::get('/cart', [CartController::class, 'getCart'])->name('cart');
     Route::post('/add-product', [CartController::class, 'addProduct'])->name('addProduct');
     Route::post('/decrease-product', [CartController::class, 'decreaseProduct'])->name('decreaseProduct');
-
     Route::get('/products/{product}/reviews', [\App\Http\Controllers\ReviewController::class, 'getProduct'])->name('product.show');
     Route::post('/add-review', [\App\Http\Controllers\ReviewController::class, 'addReview'])->name('review.store');
-    Route::get('/create-order', [OrderController::class, 'getCheckoutForm'])->name('createOrder');
-    Route::post('create-order', [OrderController::class, 'handleCheckout'])->name('createOrder.submit');
+    Route::get('/create-order', [OrderController::class, 'getCheckOutForm'])->name('createOrder');
+    Route::post('create-order', [OrderController::class, 'handleCheckOut'])->name('createOrder.submit');
     Route::get('/user-orders', [OrderController::class, 'getAll'])->name('user-orders');
 });

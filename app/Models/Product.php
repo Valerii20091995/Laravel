@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * @property int $id
@@ -22,16 +23,10 @@ class Product extends Model
     {
         return $this->hasMany(OrderProduct::class);
     }
-    public function orders()
+    public function orders(): BelongsToMany
     {
-        return $this->hasManyThrough(
-            Order::class,
-            OrderProduct::class,
-            'product_id',
-            'id',
-            'id',
-            'order_id',
-        );
+        return $this->belongsToMany(Order::class, 'order_products')
+            ->withPivot('amount');
     }
     public function userProducts()
     {

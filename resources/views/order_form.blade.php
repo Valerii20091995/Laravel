@@ -58,36 +58,37 @@
 
 <div class="container">
     <h1>Оформление заказа</h1>
-    <form action="/order" method="POST">
+    <form action="{{route('createOrder.submit')}}" method="POST">
+        @csrf
         <div class="form-group">
             <label for="name">Имя получателя</label>
-            <?php if (isset($errors['name'])): ?>
-            <label style="..."><?php echo $errors['name'];?></label>
-            <?php endif; ?>
+            @error('name')
+            <label for="name"><b>{{ $message }}</b></label>
+            @enderror
             <input type="text" id="name" name="name" required placeholder="Введите ваше имя">
         </div>
 
         <div class="form-group">
             <label for="address">Адрес</label>
-            <?php if (isset($errors['address'])): ?>
-            <label style="..."><?php echo $errors['address'];?></label>
-            <?php endif; ?>
+            @error('address')
+            <label for="address"><b>{{ $message }}</b></label>
+            @enderror
             <input type="text" id="address" name="address" required placeholder="Введите ваш адрес">
         </div>
 
         <div class="form-group">
             <label for="phone">Телефон</label>
-            <?php if (isset($errors['phone'])): ?>
-            <label style="..."><?php echo $errors['phone'];?></label>
-            <?php endif; ?>
+            @error('phone')
+            <label for="phone"><b>{{ $message }}</b></label>
+            @enderror
             <input type="tel" id="phone" name="phone" required placeholder="Введите ваш телефон">
         </div>
 
         <div class="form-group">
             <label for="comment">Комментарии</label>
-            <?php if (isset($errors['comment'])): ?>
-            <label style="..."><?php echo $errors['comment'];?></label>
-            <?php endif; ?>
+            @error('comment')
+            <label for="comment"><b>{{ $message }}</b></label>
+            @enderror
             <textarea id="comment" name="comment" rows="4" placeholder="Дополнительные комментарии"></textarea>
         </div>
 
@@ -95,17 +96,17 @@
             <input type="submit" value="Оформить заказ">
         </div>
         <div class="container">
-            <?php foreach ($userProducts as $userProduct): ?>
-            <h2><?php echo $userProduct->getProduct()->getName()?></h2>
+           @foreach($cartItems as $item)
+            <h2>{{$item->product->name}}</h2>
             <label for="amount">Количество:</label>
-            <input type="number" id="amount" name="amount" min="1" value=<?php echo $userProduct->getAmount()?> required>
+            <input type="number" id="amount" name="amount" min="1" value={{$item->amount}} required>
             <label for="amount">Стоимость за 1 шт:</label>
-            <div class="price">₽ <?php echo $userProduct->getProduct()->getPrice()?></div>
+            <div class="price">₽ {{$item->product->price}}</div>
             <label for="totalProduct">Итого:</label>
-            <div class="price">₽ <?php echo $userProduct->getTotalSum();?></div>
-            <?php endforeach; ?>
+            <div class="price">₽ {{ $item->amount * $item->product->price }}</div>
+            @endforeach
             <h2><label for="totalOrder">Заказ на сумму:</label></h2>
-            <div class="price">₽ <?php echo $total;?></div>
+            <div class="price">₽ {{$total}}</div>
 
         </div>
         <button type="submit">Оформить заказ</button>

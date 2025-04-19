@@ -1,4 +1,9 @@
 @if($product)
+    <div style="margin-bottom: 20px;">
+        <a href="{{ route('catalog') }}" class="btn btn-secondary">
+            ← Вернуться в каталог
+        </a>
+    </div>
     <h1>{{$product->name}}</h1>
     <img class="card-img-top" src="{{$product->image_url}}" alt="Card image">
     <p>{{$product->price}}</p>
