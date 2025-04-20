@@ -7,33 +7,37 @@ use App\DTO\DecreaseProductDTO;
 use Illuminate\Support\Facades\Auth;
 use App\Models\UserProduct;
 Use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class CartService
 {
     public function addProduct(AddProductDTO $dto):int
     {
-        $userProduct = UserProduct::query()->firstOrCreate(
-            ['user_id'=> Auth::id(),'product_id'=> $dto->productId],
-            ['amount'=>0]
-        );
-        return $userProduct->increment('amount');
+        return DB::transaction(function () use ($dto) {
+          $userProduct = UserProduct::query()->firstOrCreate(
+              ['user_id'=> Auth::id(),'product_id'=> $dto->productId],
+              ['amount'=>0]
+          );
+          return $userProduct->increment('amount');
+        });
     }
     public function decreaseProduct(DecreaseProductDTO $dto):int
     {
-        /** @var User $user */
-        $userProduct = UserProduct::query()->where([
-            'user_id'=> Auth::id(),
-            'product_id'=>$dto->productId],
-        )->first();
-        if (!$userProduct) {
-            return 0;
-        }
-        if ($userProduct->amount > 1) {
-            $userProduct->decrement('amount');
-            return $userProduct->amount;
-        }
-        $userProduct->delete();
-        return 0;
+        return DB::transaction(function () use ($dto) {
+          /** @var User $user */
+          $userProduct = UserProduct::query()->where([
+              'user_id'=> Auth::id(),
+              'product_id'=>$dto->productId],
+          )->first();
+          if (!$userProduct) return 0;
+
+          if ($userProduct->amount > 1) {
+              $userProduct->decrement('amount');
+              return $userProduct->amount;
+          }
+          $userProduct->delete();
+          return 0;
+        });
     }
     public function getCartSum(User $user)
     {

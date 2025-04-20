@@ -12,10 +12,11 @@ class OrderService
         private CartService $cartService,
         private LoggerService $loggerService
     ) {}
-    public function createOrder(User $user, array $data)
+    public function createOrder(User $user, array $data):Order
     {
         $orderProducts = $this->cartService->getUserCart($user);
         $total = $this->cartService->getCartSum($user);
+
         DB::beginTransaction();
         try {
             if ($total < 500) {
@@ -42,9 +43,7 @@ class OrderService
         } catch (\Throwable $exception) {
             DB::rollBack();
             $this->loggerService->logError($exception);
-            return response()->view('500', [
-                'message' => $exception->getMessage()
-            ], 500);
+            throw $exception;
         }
     }
     public function getAll():array

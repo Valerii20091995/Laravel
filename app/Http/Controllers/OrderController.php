@@ -15,9 +15,10 @@ class OrderController
     ) {}
     public function getCheckOutForm()
     {
+        $user = Auth::user();
         /** @var User $user */
-        $cartItems = $this->cartService->getUserCart(Auth::user());
-        $total = $this->cartService->getCartSum(Auth::user());
+        $cartItems = $this->cartService->getUserCart($user);
+        $total = $this->cartService->getCartSum($user);
         if ($cartItems->isEmpty()) {
             return redirect()->route('catalog');
         }
@@ -26,16 +27,17 @@ class OrderController
     public function handleCheckOut(OrderRequest $request)
     {
         /** @var User $user */
+        $user = Auth::user();
         try {
             $order = $this->orderService->createOrder(
-                Auth::user(),
+                $user,
                 $request->validated()
             );
             return redirect()->route('catalog');
         } catch (\Exception $e) {
             return back()
                 ->withInput()
-                ->with('error', $e->getMessage());
+                ->with('error','Ошибка оформления заказа: ' . $e->getMessage());
         }
     }
     public function getAll()
