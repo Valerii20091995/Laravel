@@ -8,9 +8,11 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderService
 {
-    public function __construct(private CartService $cartService)
-    {}
-    public function createOrder(User $user, array $data):Order
+    public function __construct(
+        private CartService $cartService,
+        private LoggerService $loggerService
+    ) {}
+    public function createOrder(User $user, array $data)
     {
         $orderProducts = $this->cartService->getUserCart($user);
         $total = $this->cartService->getCartSum($user);
@@ -39,7 +41,10 @@ class OrderService
 
         } catch (\Throwable $exception) {
             DB::rollBack();
-            throw $exception;
+            $this->loggerService->logError($exception);
+            return response()->view('500', [
+                'message' => $exception->getMessage()
+            ], 500);
         }
     }
     public function getAll():array

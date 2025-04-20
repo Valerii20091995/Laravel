@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('errors', function (Blueprint $table) {
             $table->id();
+            $table->text('error_message');
+            $table->string('file', 255);
+            $table->integer('line');
+            $table->timestamp('date')->useCurrent();
             $table->timestamps();
         });
     }
