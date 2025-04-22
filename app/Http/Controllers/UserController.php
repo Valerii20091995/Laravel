@@ -7,6 +7,7 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\signUpRequest;
 use App\Mail\TestMail;
 use App\Models\User;
+use App\Services\RabbitmqService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -16,6 +17,12 @@ use PhpAmqpLib\Message\AMQPMessage;
 
 class UserController
 {
+    private RabbitmqService $rabbitmqService;
+
+    public function __construct(RabbitmqService $rabbitmqService)
+    {
+        $this->rabbitmqService = $rabbitmqService;
+    }
     public function getSignUp()
     {
         return view('signUpForm');
@@ -23,6 +30,7 @@ class UserController
     }
     public function signUp(signUpRequest $request)
     {
+        /** @var  User $user */
         $data = $request->all();
         $user = User::query()->create([
             'name' => $data['name'],
@@ -31,16 +39,8 @@ class UserController
         ]);
 
 //        Mail::to('regaska0384@mail.ru')->send(new TestMail($data));
-        $connection = new AMQPStreamConnection('rabbitmq', 5672, 'valera', 'qwerty');
-        $channel = $connection->channel();
 
-        $channel->queue_declare('hello', false, false, false, false);
-
-        $msg = new AMQPMessage($user->id);
-        $channel->basic_publish($msg, '', 'hello');
-
-        $channel->close();
-        $connection->close();
+        $this->rabbitmqService->produce(['user_id' => $user->id], 'sign-up_email');
 
         return response()->redirectTo('login');
     }
