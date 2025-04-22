@@ -5,10 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\EditProfileRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\signUpRequest;
+use App\Mail\TestMail;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Request;
+use PhpAmqpLib\Connection\AMQPStreamConnection;
+use PhpAmqpLib\Message\AMQPMessage;
 
 class UserController
 {
@@ -25,6 +29,19 @@ class UserController
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+
+//        Mail::to('regaska0384@mail.ru')->send(new TestMail($data));
+        $connection = new AMQPStreamConnection('rabbitmq', 5672, 'valera', 'qwerty');
+        $channel = $connection->channel();
+
+        $channel->queue_declare('hello', false, false, false, false);
+
+        $msg = new AMQPMessage($user->id);
+        $channel->basic_publish($msg, '', 'hello');
+
+        $channel->close();
+        $connection->close();
+
         return response()->redirectTo('login');
     }
     public function getLogin()

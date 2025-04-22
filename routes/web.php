@@ -34,3 +34,6 @@ Route::middleware('auth')->group(function ()
     Route::post('create-order', [OrderController::class, 'handleCheckOut'])->name('createOrder.submit');
     Route::get('/user-orders', [OrderController::class, 'getAll'])->name('user-orders');
 });
+
+Route::get('/email/test', [\App\Http\Controllers\TestMailController::class, 'send']);
+Route::get('/email/receive', [\App\Http\Controllers\TestMailController::class, 'receive']);
