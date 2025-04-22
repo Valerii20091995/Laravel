@@ -29,19 +29,11 @@ class RabbitmqService
 
         $channel->close();
     }
-    public function consume(string $queueName)
+    public function consume(string $queueName,callable $callback)
     {
         $channel = $this->connection->channel();
 
         $channel->queue_declare($queueName, false, false, false, false);
-
-        $callback = function ($msg) {
-            // в переменной $msg будет передаваться как юзерконтроллере айдиншник пользователя
-            $user = User::query()->find($msg->body);
-            $email = $user->email;
-            $data = ['name' => $user->name];
-            Mail::to("$email")->send(new TestMail($data));
-        };
 
         $channel->basic_consume('sign-up_email', '', false, true, false, false, $callback);
 

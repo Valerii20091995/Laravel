@@ -39,7 +39,14 @@ class SignUpNotifyCommand extends Command
     }
     public function handle()
     {
-        $this->rabbitmqService->consume('sign-up_email');
+        $callback = function ($msg) {
+            // в переменной $msg будет передаваться как юзерконтроллере айдиншник пользователя
+            $user = User::query()->find($msg->body);
+            $email = $user->email;
+            $data = ['name' => $user->name];
+            Mail::to("$email")->send(new TestMail($data));
+        };
+        $this->rabbitmqService->consume('sign-up_email', $callback);
 
 
     }
