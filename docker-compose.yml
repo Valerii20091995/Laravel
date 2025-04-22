@@ -33,4 +33,12 @@ services:
       RABBITMQ_DEFAULT_PASS: qwerty
     ports:
       - "5672:5672"     # AMQP порт
-      - "15672:15672"   # Web UI порт
+      - "15672:15672"   # Web UI порт\
+  redis:
+      image: redis:alpine
+      container_name: redis
+      ports:
+          - "6379:6379"
+      php-fpm:
+          depends_on:
+              - redis
