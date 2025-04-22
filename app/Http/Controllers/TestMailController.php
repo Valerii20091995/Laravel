@@ -15,13 +15,4 @@ class TestMailController
         Mail::to('regaska0384@mail.ru')->send(new TestMail($data));
         echo "письмо успешно отправлено";
     }
-    public function receive()
-    {
-
-
-
-
-
-    }
-
 }

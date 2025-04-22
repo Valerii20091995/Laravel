@@ -25,7 +25,7 @@ class RabbitmqService
         $channel->queue_declare($queueName, false, false, false, false);
         $data = json_encode($data); // json преобразует наш массив в строки: "id":1, "name": "egor"
         $msg = new AMQPMessage($data);
-        $channel->basic_publish($msg, '', 'hello');
+        $channel->basic_publish($msg, '', $queueName);
 
         $channel->close();
     }
@@ -35,7 +35,7 @@ class RabbitmqService
 
         $channel->queue_declare($queueName, false, false, false, false);
 
-        $channel->basic_consume('sign-up_email', '', false, true, false, false, $callback);
+        $channel->basic_consume($queueName, '', false, true, false, false, $callback);
 
         try {
             $channel->consume();

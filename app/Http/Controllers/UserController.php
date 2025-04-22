@@ -40,7 +40,9 @@ class UserController
 
 //        Mail::to('regaska0384@mail.ru')->send(new TestMail($data));
 
-        $this->rabbitmqService->produce(['user_id' => $user->id], 'sign-up_email');
+        $this->rabbitmqService->produce([
+            'user_id' => $user->id],
+            'sign-up_email');
 
         return response()->redirectTo('login');
     }
