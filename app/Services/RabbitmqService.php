@@ -16,7 +16,7 @@ class RabbitmqService
 
     public function __construct()
     {
-        $this->connection = new AMQPStreamConnection('rabbitmq', 5672, 'valera', 'qwerty');
+//        $this->connection = new AMQPStreamConnection('rabbitmq', 5672, 'valera', 'qwerty');
     }
     public function produce(array $data, string $queueName)
     {

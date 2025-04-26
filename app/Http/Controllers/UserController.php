@@ -14,14 +14,15 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Request;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
+use App\Jobs\SendUserNotification;
 
 class UserController
 {
-    private RabbitmqService $rabbitmqService;
+//    private RabbitmqService $rabbitmqService;
 
-    public function __construct(RabbitmqService $rabbitmqService)
+    public function __construct()
     {
-        $this->rabbitmqService = $rabbitmqService;
+//        $this->rabbitmqService = $rabbitmqService;
     }
     public function getSignUp()
     {
@@ -40,9 +41,11 @@ class UserController
 
 //        Mail::to('regaska0384@mail.ru')->send(new TestMail($data));
 
-        $this->rabbitmqService->produce([
-            'user_id' => $user->id],
-            'sign-up_email');
+//        $this->rabbitmqService->produce([
+//            'user_id' => $user->id],
+//            'sign-up_email');
+
+        SendUserNotification::dispatch($user);
 
         return response()->redirectTo('login');
     }

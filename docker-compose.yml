@@ -40,3 +40,5 @@ services:
       ports:
               - "6379:6379"
       restart: unless-stopped
+      volumes:
+          - ./data/redis:/var/lib/redis:rw
