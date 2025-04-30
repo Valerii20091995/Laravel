@@ -22,8 +22,8 @@ class YougileClient
     {
         $response = Http::withHeaders([
             'Content-Type' => 'application/json',
-            'Authorization' => 'Bearer FyfUN5DPJi-eRUuTHu7dGkXh41EYlXTGIfhcoYDnOcQkJemAsHdiFta9mZ-2bO9X',
-        ])->post("https://yougile.com/api-v2/tasks", $createTaskDTO->toArray());
+            'Authorization' => 'Bearer ' . $this->apiKey,
+        ])->post($this->baseUrl . '/tasks', $createTaskDTO->toArray());
     if (!$response->successful()) {
         throw new \Exception('Error creating task');
     }
@@ -35,7 +35,7 @@ class YougileClient
         $response = retry(3, function () use ($taskId) {
             return Http::withHeaders([
                 'Content-Type' => 'application/json',
-                'Authorization' => 'Bearer FyfUN5DPJi-eRUuTHu7dGkXh41EYlXTGIfhcoYDnOcQkJemAsHdiFta9mZ-2bO9X',
+                'Authorization' => 'Bearer ' . $this->apiKey,
             ])->delete($this->baseUrl . '/tasks/' . $taskId);
         });
     }
