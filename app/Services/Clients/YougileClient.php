@@ -4,6 +4,7 @@ namespace App\Services\Clients;
 
 use App\DTO\CreateTaskDTO;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class YougileClient
 {
@@ -30,14 +31,26 @@ class YougileClient
     $data = $response->json();
     return $data['id'];
     }
-    public function deleteTask(string $taskId)
+    public function deleteTask(string $taskId):bool
     {
-        $response = retry(3, function () use ($taskId) {
-            return Http::withHeaders([
-                'Content-Type' => 'application/json',
-                'Authorization' => 'Bearer ' . $this->apiKey,
-            ])->delete($this->baseUrl . '/tasks/' . $taskId);
-        });
+        try {
+            $response = retry(3, function () use ($taskId) {
+                return Http::withHeaders([
+                    'Content-Type' => 'application/json',
+                    'Authorization' => 'Bearer ' . $this->apiKey,
+                ])->delete($this->baseUrl . '/tasks/' . $taskId);
+            });
+            if (!$response->successful()) {
+                throw new \Exception('Error deleting task');
+            }
+            return true;
+        } catch (\Exception $e) {
+            Log::error('Yougile,удаление тикета не получилось', [
+                'task_id' => $taskId,
+                'error' => $e->getMessage()
+            ]);
+            return false;
+        }
     }
 
 }
