@@ -42,16 +42,16 @@ class OrderService
 //            $response->body();
 //            print_r($response);
             // ниже предоставлен синхронный метод создание задача в проекте в юджайл
-            /*Http::withHeaders([
-                'Content-Type' => 'application/json',
-                'Authorization' => "Bearer FyfUN5DPJi-eRUuTHu7dGkXh41EYlXTGIfhcoYDnOcQkJemAsHdiFta9mZ-2bO9X"
-            ])->post("https://yougile.com/api-v2/tasks",[
-                'title' => "Заказ № $order->id",
-                "columnId" => "3972ae1f-e4d6-4963-b9c9-cd0fbba0b6ef",
-                "description" => json_encode($orderProducts, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE),
-                "archived" => false,
-                "completed" => false,
-            ])->throw()->json();*/
+//            Http::withHeaders([
+//                'Content-Type' => 'application/json',
+//                'Authorization' => "Bearer FyfUN5DPJi-eRUuTHu7dGkXh41EYlXTGIfhcoYDnOcQkJemAsHdiFta9mZ-2bO9X"
+//            ])->post("https://yougile.com/api-v2/tasks",[
+//                'title' => "Заказ № $order->id",
+//                "columnId" => "3972ae1f-e4d6-4963-b9c9-cd0fbba0b6ef",
+//                "description" => json_encode($orderProducts, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE),
+//                "archived" => false,
+//                "completed" => false,
+//            ])->throw()->json();
             // ниже предоставлен ассинхронный метод через job
             SendHttpRequest::dispatch($order);
             DB::commit();

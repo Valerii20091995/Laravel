@@ -34,5 +34,10 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'yougile' => [
+        'base_url' => env('YOUGILE_BASE_URL'),
+        'api_key' => env('YOUGILE_API_KEY'),
+
+    ],
 
 ];
