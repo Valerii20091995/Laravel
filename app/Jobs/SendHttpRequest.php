@@ -54,7 +54,8 @@ class SendHttpRequest implements ShouldQueue
             $taskId = $this->yougileClient->createTask($dto);
 
             if ($taskId) {
-                $this->order->update(['yougile_task_id' => $taskId]);
+                $this->order->yougile_task_id = $taskId;
+                $this->order->save();
                 Log::info("Тикет в Yougile создан", ['task_id' => $taskId]);
             }
         } catch (\Exception $e) {
